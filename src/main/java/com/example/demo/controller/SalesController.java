@@ -12,6 +12,6 @@ public class SalesController {
 
     @PostMapping("register")
     public ResponseEntity<StandardResponse> registerSale(){
-
+        return ResponseEntity.ok().body(new StandardResponse());
     }
 }
