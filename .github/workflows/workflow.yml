@@ -6,4 +6,17 @@ jobs:
   say_hello:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "hello world"
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Run Maven Verify
+        run: mvn verify
+
+      - name: Say Hello
+        run: echo "hello world"
