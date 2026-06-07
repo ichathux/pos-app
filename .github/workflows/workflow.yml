@@ -1,4 +1,4 @@
-name: workflow-test.yml
+name: workflow.yml
 on:
   workflow_dispatch:
     inputs:
