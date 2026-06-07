@@ -3,8 +3,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  say_hello:
+  run_app:
     runs-on: ubuntu-latest
+    environment: dev
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
