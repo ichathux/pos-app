@@ -15,8 +15,24 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: Run Maven Verify
+      - name: Verify
         run: mvn verify
+
+      - name: Containerize
+        run: mvn package -DskipTests
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: my-dockerhub-user/my-app:latest
 
       - name: Say Hello
         run: echo "hello world"
