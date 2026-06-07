@@ -1,0 +1,36 @@
+name: 1 - Verify Code
+
+on:
+  workflow_dispatch:
+    inputs:
+      maven_args:
+        description: 'Extra Maven arguments (optional)'
+        required: false
+        default: ''
+
+jobs:
+  verify:
+    name: Run Maven Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Run Maven Tests
+        run: mvn test ${{ github.event.inputs.maven_args }}
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: target/surefire-reports/
+          retention-days: 7
