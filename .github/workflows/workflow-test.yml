@@ -1,0 +1,10 @@
+name: workflow-test.yml
+on:
+  workflow_dispatch:
+    push
+
+jobs:
+  say_hello:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "hello world"
