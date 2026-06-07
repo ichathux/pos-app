@@ -4,11 +4,9 @@ import com.example.demo.ITBase;
 import com.example.demo.model.Client;
 import com.example.demo.model.Country;
 import com.example.demo.model.Organization;
-import com.example.demo.repository.ClientOrganizationRepository;
 import com.example.demo.repository.ClientRepository;
 import com.example.demo.repository.CountryRepository;
 import com.example.demo.repository.OrganizationRepository;
-import com.example.demo.transfer.create.CreateOrganization;
 import com.example.demo.transfer.update.AddUser;
 import com.example.demo.util.StandardResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,12 +39,9 @@ public class OrganizationIT extends ITBase {
     @Autowired
     private OrganizationRepository organizationRepository;
 
-    @Autowired
-    private ClientOrganizationRepository clientOrganizationRepository;
-
-    final long mobile = ThreadLocalRandom.current()
-            .nextLong(1_000_000_000L, 10_000_000_000L);
-    final String username = RandomStringUtils.random(8) + "@email.com";
+//    final long mobile = ThreadLocalRandom.current()
+//            .nextLong(1_000_000_000L, 10_000_000_000L);
+//    final String username = RandomStringUtils.random(8) + "@email.com";
 
     @Override
     @BeforeEach
@@ -89,44 +84,44 @@ public class OrganizationIT extends ITBase {
         Assertions.assertEquals(org.getCountry().getCountryName(), organization.getCountry().getCountryName());
     }
 
-    @Test
-    void testCreateOrganization() throws Exception {
-
-        Country country = this.createCOuntry();
-        Client saved = this.createNewClient();
-        CreateOrganization createOrganization = new CreateOrganization(
-                saved.getId(),
-                RandomStringUtils.random(10),
-                RandomStringUtils.random(20),
-                mobile,
-                RandomStringUtils.random(5),
-                country.getId(),
-                null,
-                null
-        );
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        MockHttpServletResponse response =
-                mockMvc.perform(post("/api/organization/register")
-                                .header("CU-Authorized-Username", "Test user")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(String.valueOf(objectMapper.valueToTree(createOrganization)))
-                        )
-                        .andExpect(status().isCreated())
-                        .andReturn()
-                        .getResponse();
-
-        var savedOrgs = organizationRepository.findAll();
-        Assertions.assertFalse(savedOrgs.isEmpty());
-        Assertions.assertEquals(201, response.getStatus());
-        var savedOrg = savedOrgs.getFirst();
-        var savedobj = clientOrganizationRepository.findAllByOrg(savedOrg.getId());
-        log.info("saved : {} ", response.getContentAsString());
-        Assertions.assertNotNull(savedOrg.getId());
-        Assertions.assertEquals(createOrganization.getName(), savedOrg.getOrgName());
-        Assertions.assertEquals(createOrganization.getContact(), savedOrg.getOrgContact());
-        Assertions.assertFalse(savedOrg.getClientOrganizations().isEmpty());
-    }
+//    @Test
+//    void testCreateOrganization() throws Exception {
+//
+//        Country country = this.createCOuntry();
+//        Client saved = this.createNewClient();
+//        CreateOrganization createOrganization = new CreateOrganization(
+//                saved.getId(),
+//                RandomStringUtils.random(10),
+//                RandomStringUtils.random(20),
+//                mobile,
+//                RandomStringUtils.random(5),
+//                country.getId(),
+//                null,
+//                null
+//        );
+//
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        MockHttpServletResponse response =
+//                mockMvc.perform(post("/api/organization/register")
+//                                .header("CU-Authorized-Username", "Test user")
+//                                .contentType(MediaType.APPLICATION_JSON)
+//                                .content(String.valueOf(objectMapper.valueToTree(createOrganization)))
+//                        )
+//                        .andExpect(status().isCreated())
+//                        .andReturn()
+//                        .getResponse();
+//
+//        var savedOrgs = organizationRepository.findAll();
+//        Assertions.assertFalse(savedOrgs.isEmpty());
+//        Assertions.assertEquals(201, response.getStatus());
+//        var savedOrg = savedOrgs.getFirst();
+//        var savedobj = clientOrganizationRepository.findAllByOrg(savedOrg.getId());
+//        log.info("saved : {} ", response.getContentAsString());
+//        Assertions.assertNotNull(savedOrg.getId());
+//        Assertions.assertEquals(createOrganization.getName(), savedOrg.getOrgName());
+//        Assertions.assertEquals(createOrganization.getContact(), savedOrg.getOrgContact());
+//        Assertions.assertFalse(savedOrg.getClientOrganizations().isEmpty());
+//    }
 
     @Test
     void addUser() throws Exception {

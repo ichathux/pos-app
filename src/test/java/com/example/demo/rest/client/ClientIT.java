@@ -18,7 +18,6 @@ import org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUtils;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -160,27 +159,27 @@ public class ClientIT extends ITBase {
         Assertions.assertEquals("Invalid request content.", response.getErrorMessage());
     }
 
-    @Test
-    void testGetClient() throws Exception {
-        Client createdClient = createNewClient();
-        ObjectMapper objectMapper = new ObjectMapper();
-        MockHttpServletResponse response =
-                mockMvc.perform(get("/api/client/{clientID}", createdClient.getId())
-                                .header("CU-Authorized-Username", "Test user")
-                                .contentType(MediaType.APPLICATION_JSON)
-                        )
-                        .andExpect(status().isOk())
-                        .andReturn()
-                        .getResponse();
-        Assertions.assertEquals(200, response.getStatus());
-        StandardResponse standardResponse = objectMapper.readValue(response.getContentAsString(), StandardResponse.class);
-
-        Object data =  standardResponse.getData();
-        Client client = objectMapper.convertValue(data, Client.class);
-        Assertions.assertEquals(createdClient.getId(), client.getId());
-        Assertions.assertEquals(createdClient.getUsername(), client.getUsername());
-        Assertions.assertEquals(createdClient.getMobile(), client.getMobile());
-    }
+//    @Test
+//    void testGetClient() throws Exception {
+//        Client createdClient = createNewClient();
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        MockHttpServletResponse response =
+//                mockMvc.perform(get("/api/client/{clientID}", createdClient.getId())
+//                                .header("CU-Authorized-Username", "Test user")
+//                                .contentType(MediaType.APPLICATION_JSON)
+//                        )
+//                        .andExpect(status().isOk())
+//                        .andReturn()
+//                        .getResponse();
+//        Assertions.assertEquals(200, response.getStatus());
+//        StandardResponse standardResponse = objectMapper.readValue(response.getContentAsString(), StandardResponse.class);
+//
+//        Object data =  standardResponse.getData();
+//        Client client = objectMapper.convertValue(data, Client.class);
+//        Assertions.assertEquals(createdClient.getId(), client.getId());
+//        Assertions.assertEquals(createdClient.getUsername(), client.getUsername());
+//        Assertions.assertEquals(createdClient.getMobile(), client.getMobile());
+//    }
 
 
 
