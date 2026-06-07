@@ -1,10 +1,6 @@
 name: workflow.yml
 on:
   workflow_dispatch:
-    inputs:
-      name:
-        description: "Name"
-        required: true
 
 jobs:
   say_hello:
